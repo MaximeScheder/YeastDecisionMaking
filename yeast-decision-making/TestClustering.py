@@ -77,8 +77,7 @@ for i in range(n_step):
     X = syst.evolve(X0).squeeze()
     X0 = X[:,:,-1]
 
-    centers, sigmas, weights, Q = GMM_EM(centers, sigmas, weights, X0, radius=0.2, Niter=30, tolerance=0.01)
-    assign = np.argmax(Q, axis=1)
+    centers, sigmas, weights, assign = GMM_EM(centers, sigmas, weights, X0, radius=0.2, Niter=30, tolerance=0.01)
     
     for j in range(n_centers):
         x_a, y_a = X0[np.where(assign==j)].T
