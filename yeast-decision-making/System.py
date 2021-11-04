@@ -31,13 +31,19 @@ class System():
         self.T = dt*Nsteps #Total time of simulation
         self.map = mapp
         self.sigma = sigma
+        self.timing = 0
     
     def evolve(self, X0):
         """
         This function evolve the system using a simple EM algorithm
             param:
-                X0: (Nx2) array that refers to the inital position
+                X0: (Ncellsx2) array that refers to the inital position
+            return:
+                Xem: (Ncellsx2xN) array with N representing the number of 
+                    steps made.
         """
+        
+        print("Starting Evolution of the System...")
         dW = np.sqrt(self.dt)*np.random.normal(0, 1, (self.Ncells,2,self.N))
         Xem = np.zeros((self.Ncells, 2, self.N))
         Xtemp = np.zeros((self.Ncells, 2))
@@ -49,6 +55,12 @@ class System():
             Xtemp = Xtemp + self.dt * Field + self.sigma * dW[:,:,i]
             Xem[:,:,i] = Xtemp
         
+        print("... Evolution ended :")
+        self.timing += self.T
+        print("Time : {} h \n".format(self.timing))
         return Xem
+    
+    def generate(self, X0):
+        return self.evolve(X0)[:,:,-1]
         
             
